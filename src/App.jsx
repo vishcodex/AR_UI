@@ -10,6 +10,9 @@ import Chatbot from './components/Chatbot'
 import Dashboard from './pages/Dashboard'
 import Customers from './pages/Customers'
 import Payments from './pages/Payments'
+import CollectorDashboard from './pages/CollectorDashboard'
+import Collections from './pages/Collections'
+import Claims from './pages/Claims'
 
 function App() {
   const navigate = useNavigate()
@@ -31,6 +34,15 @@ function App() {
     } else if (lowerIntent === 'payments') {
       navigate('/payments')
       return 'Navigating to Payments page'
+    } else if (lowerIntent === 'collector dashboard') {
+      navigate('/collector-dashboard')
+      return 'Navigating to Collector Dashboard page'
+    } else if (lowerIntent === 'collections') {
+      navigate('/collections')
+      return 'Navigating to Collections page'
+    } else if (lowerIntent === 'claims') {
+      navigate('/claims')
+      return 'Navigating to Claims page'
     } else {
       return 'Sorry, I can\'t find that page. Please try again.'
     }
@@ -87,7 +99,7 @@ function App() {
     let intent = null
     
     // Check for dashboard/home intent
-    if (/(dashboard|home|main|overview|start|landing)/i.test(lowerMessage)) {
+    if (/(dashboard|home|main|overview|start|landing)/i.test(lowerMessage) && !/(collector)/i.test(lowerMessage)) {
       intent = 'dashboard'
     }
     // Check for customers/clients intent
@@ -97,6 +109,18 @@ function App() {
     // Check for payments/billing intent
     else if (/(payments|payment|pay|billing|invoice|money|transaction)/i.test(lowerMessage)) {
       intent = 'payments'
+    }
+    // Check for collector dashboard intent
+    else if (/(collector.*dashboard|collector.*overview)/i.test(lowerMessage)) {
+      intent = 'collector dashboard'
+    }
+    // Check for collections intent
+    else if (/(collections|collection|collect)/i.test(lowerMessage)) {
+      intent = 'collections'
+    }
+    // Check for claims intent
+    else if (/(claims|claim|insurance claim|medical claim)/i.test(lowerMessage)) {
+      intent = 'claims'
     }
     
     if (intent) {
@@ -122,6 +146,9 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/payments" element={<Payments />} />
+          <Route path="/collector-dashboard" element={<CollectorDashboard />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route path="/claims" element={<Claims />} />
         </Routes>
       </Box>
       <Chatbot messages={messages} onSendMessage={handleChatMessage} />
